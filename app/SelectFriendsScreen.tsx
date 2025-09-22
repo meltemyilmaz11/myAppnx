@@ -8,8 +8,9 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    View,
+    View
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Friend {
     id: string;
@@ -49,7 +50,7 @@ export default function SelectFriendsScreen() {
 
     const goNext = () => {
         if (selectedFriends.length === 0) {
-            Alert.alert("Uyarı", "Lütfen en az bir kişi seçin"); // <-- Uyarı eklendi
+            Alert.alert("Uyarı", "Lütfen en az bir kişi seçin");
             return;
         }
 
@@ -60,77 +61,84 @@ export default function SelectFriendsScreen() {
     };
 
     return (
-        <View style={styles.container}>
-            {/* Header */}
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => router.back()}>
-                    <Text style={styles.headerButton}>Geri</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={goNext}>
-                    <Text style={styles.headerButton}>İleri</Text>
-                </TouchableOpacity>
-            </View>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+            <View style={styles.container}>
+                {/* Header (top area) */}
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => router.back()}>
+                        <Text style={styles.headerButton}>Geri</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={goNext}>
+                        <Text style={styles.headerButton}>İleri</Text>
+                    </TouchableOpacity>
+                </View>
 
-            {/* Arkadaşlar başlığı */}
-            <Text style={styles.friendsTitle}>Arkadaşlar</Text>
+                {/* Arkadaşlar başlığı */}
+                <Text style={styles.friendsTitle}>Arkadaşlar</Text>
 
-            {/* Seçilen arkadaşlar, sadece varsa göster */}
-            {selectedFriends.length > 0 && (
-                <ScrollView horizontal style={styles.selectedContainer}>
-                    {selectedFriends.map((friend) => (
-                        <View key={friend.id} style={styles.selectedFriend}>
-                            <Image source={{ uri: friend.avatar }} style={styles.avatarSmall} />
-                            <Text style={styles.selectedName}>{friend.name}</Text>
-                            {/* Çarpı butonu */}
-                            <TouchableOpacity onPress={() => toggleFriend(friend)}>
-                                <Text style={styles.removeFriend}>×</Text>
-                            </TouchableOpacity>
+                {/* Seçilen arkadaşlar, varsa göster */}
+                {selectedFriends.length > 0 && (
+                    <ScrollView horizontal style={styles.selectedContainer}>
+                        {selectedFriends.map((friend) => (
+                            <View key={friend.id} style={styles.selectedFriend}>
+                                <Image source={{ uri: friend.avatar }} style={styles.avatarSmall} />
+                                <Text style={styles.selectedName}>{friend.name}</Text>
+                                <TouchableOpacity onPress={() => toggleFriend(friend)}>
+                                    <Text style={styles.removeFriend}>×</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+                    </ScrollView>
+                )}
+
+                {/* Arama çubuğu */}
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Arkadaş ara..."
+                    value={search}
+                    onChangeText={setSearch}
+                />
+
+                {/* Arkadaş Ekle Butonu */}
+                <TouchableOpacity
+                    style={styles.addFriendButton}
+                    onPress={() => router.push("/AddFriend")}
+                >
+                    <View style={styles.addFriendContent}>
+                        <View style={styles.plusCircle}>
+                            <Text style={styles.plusText}>+</Text>
                         </View>
+                        <Text style={styles.addFriendText}>Arkadaş Ekle</Text>
+                    </View>
+                </TouchableOpacity>
+
+                {/* Arkadaş listesi */}
+                <ScrollView style={styles.friendList}>
+                    {filteredFriends.map((friend) => (
+                        <TouchableOpacity
+                            key={friend.id}
+                            style={styles.friendItem}
+                            onPress={() => toggleFriend(friend)}
+                        >
+                            <Image source={{ uri: friend.avatar }} style={styles.avatar} />
+                            <Text style={styles.friendName}>{friend.name}</Text>
+                        </TouchableOpacity>
                     ))}
                 </ScrollView>
-            )}
-
-            {/* Arama çubuğu */}
-            <TextInput
-                style={styles.searchInput}
-                placeholder="Arkadaş ara..."
-                value={search}
-                onChangeText={setSearch}
-            />
-
-            {/* Arkadaş Ekle Butonu */}
-            <TouchableOpacity
-                style={styles.addFriendButton}
-                onPress={() => router.push("/AddFriend")}
-            >
-                <View style={styles.addFriendContent}>
-                    <View style={styles.plusCircle}>
-                        <Text style={styles.plusText}>+</Text>
-                    </View>
-                    <Text style={styles.addFriendText}>Arkadaş Ekle</Text>
-                </View>
-            </TouchableOpacity>
-
-            {/* Arkadaş listesi */}
-            <ScrollView style={styles.friendList}>
-                {filteredFriends.map((friend) => (
-                    <TouchableOpacity
-                        key={friend.id}
-                        style={styles.friendItem}
-                        onPress={() => toggleFriend(friend)}
-                    >
-                        <Image source={{ uri: friend.avatar }} style={styles.avatar} />
-                        <Text style={styles.friendName}>{friend.name}</Text>
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
-        </View>
+            </View>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-    header: { flexDirection: "row", justifyContent: "space-between", marginBottom: 10 },
+    container: { flex: 1, paddingHorizontal: 20 },
+    header: { 
+        flexDirection: "row", 
+        justifyContent: "space-between", 
+        alignItems: "center",
+        marginBottom: 20,
+        marginTop: 10
+    },
     headerButton: { fontSize: 16, fontWeight: "bold", color: "#934790" },
     selectedContainer: { flexDirection: "row", marginBottom: 20, maxHeight: 50 },
     selectedFriend: {
@@ -154,7 +162,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#934790",
         paddingVertical: 10,
         paddingHorizontal: 15,
-        borderRadius: 10,
+        borderRadius: 15,
     },
     plusCircle: {
         width: 30,
