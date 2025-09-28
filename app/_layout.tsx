@@ -1,6 +1,11 @@
-import { Slot } from "expo-router";
+import { Stack } from "expo-router";
+import { GroupProvider } from "../context/GroupContext";
 
 export default function Layout() {
-  // Slot, alt route'ların render edileceği yerdir
-  return <Slot />;
+  return (
+    <GroupProvider>
+      <Stack />
+    </GroupProvider>
+  );
 }
+

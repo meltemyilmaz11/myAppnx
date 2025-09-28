@@ -2,12 +2,24 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import * as ImagePicker from "expo-image-picker";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+    Alert,
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useGroup } from "../context/GroupContext";
 
 export default function GroupInfoScreen() {
     const router = useRouter();
+    const { addGroup } = useGroup();
     const { friends } = useLocalSearchParams();
+
     const selectedFriends = friends
         ? JSON.parse(decodeURIComponent(friends as string))
         : [];
@@ -29,13 +41,25 @@ export default function GroupInfoScreen() {
     };
 
     const createGroup = () => {
-        console.log("Grup oluşturuldu!", { groupName, selectedFriends, groupImage, startTime, endTime });
+        if (!groupName.trim()) {
+            Alert.alert("Hata", "Lütfen grup adı girin.");
+            return;
+        }
+
+        addGroup({
+            name: groupName,
+            image: groupImage,
+            friends: selectedFriends,
+            startTime,
+            endTime,
+        });
+
         Alert.alert("Başarılı", "Grubunuz Oluşturuldu!");
         router.push("/GroupListScreen");
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#faf7ffef" }}>
             <View style={styles.container}>
 
                 {/* Top Area / Header */}
@@ -44,7 +68,7 @@ export default function GroupInfoScreen() {
                         <Text style={styles.backButton}>← Geri</Text>
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>Grup Bilgisi</Text>
-                    <View style={{ width: 50 }} /> {/* Placeholder, simetri için */}
+                    <View style={{ width: 50 }} />
                 </View>
 
                 {/* Header with Image Picker & Group Name */}
@@ -59,7 +83,7 @@ export default function GroupInfoScreen() {
                     <TextInput
                         style={styles.groupNameInput}
                         placeholder="Grup Adı"
-                        placeholderTextColor="#aaa"
+                        placeholderTextColor="#28044de3"
                         value={groupName}
                         onChangeText={setGroupName}
                     />
@@ -102,10 +126,10 @@ export default function GroupInfoScreen() {
                             sliderLength={300}
                             allowOverlap={false}
                             snapped
-                            selectedStyle={{ backgroundColor: "#934790" }}
+                            selectedStyle={{ backgroundColor: "#603290ff" }}
                             unselectedStyle={{ backgroundColor: "#ccc" }}
                             markerStyle={{
-                                backgroundColor: "#934790",
+                                backgroundColor: "#603290ff",
                                 height: 24,
                                 width: 24,
                                 borderRadius: 12
@@ -133,15 +157,15 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         marginTop: 10
     },
-    backButton: { fontSize: 16, color: "#934790", fontWeight: "bold" },
+    backButton: { fontSize: 16, color: "#603290ff", fontWeight: "bold" },
     headerTitle: { fontSize: 18, fontWeight: "bold", color: "#000" },
     header: { flexDirection: "row", alignItems: "center", marginBottom: 20 },
     imagePicker: { width: 80, height: 80, borderRadius: 40, backgroundColor: "#eee", justifyContent: "center", alignItems: "center", overflow: "hidden" },
     groupImage: { width: "100%", height: "100%", borderRadius: 40 },
     groupNameInput: { flex: 1, marginLeft: 15, borderBottomWidth: 1, borderColor: "#ccc", fontSize: 18, paddingVertical: 5 },
-    title: { fontSize: 24, fontWeight: "bold", marginBottom: 10, color: "#934790" },
+    title: { fontSize: 24, fontWeight: "bold", marginBottom: 10, color: "#663290ff" },
     list: { flex: 1, marginBottom: 20 },
-    friendItem: { flexDirection: "row", alignItems: "center", marginBottom: 15, padding: 10, backgroundColor: "#f2f2f2", borderRadius: 10 },
+    friendItem: { flexDirection: "row", alignItems: "center", marginBottom: 15, padding: 10, backgroundColor: "#6347b00c", borderRadius: 10 },
     avatar: { width: 50, height: 50, borderRadius: 25, marginRight: 10 },
     name: { fontSize: 18, fontWeight: "500" },
     timeTitle: { fontSize: 18, marginBottom: 10 },
@@ -150,6 +174,6 @@ const styles = StyleSheet.create({
     markWrapper: { position: "absolute", top: 20, alignItems: "center" },
     mark: { width: 2, height: 10, backgroundColor: "#ccc" },
     markLabel: { fontSize: 15, textAlign: "center", marginTop: 7 },
-    createButton: { backgroundColor: "#934790", paddingVertical: 12, borderRadius: 8, alignItems: "center", marginBottom: 20 },
+    createButton: { backgroundColor: "#603290ff", paddingVertical: 12, borderRadius: 8, alignItems: "center", marginBottom: 20 },
     createButtonText: { color: "#fff", fontSize: 18, fontWeight: "bold" },
 });

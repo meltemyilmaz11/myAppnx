@@ -8,8 +8,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context"; // 👈 eklendi
 
 export default function SignUpScreen() {
   const router = useRouter();
@@ -23,7 +24,14 @@ export default function SignUpScreen() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSignUp = () => {
-    if (!firstName || !lastName || !username || !phone || !password || !confirmPassword) {
+    if (
+      !firstName ||
+      !lastName ||
+      !username ||
+      !phone ||
+      !password ||
+      !confirmPassword
+    ) {
       Alert.alert("Hata", "Lütfen tüm alanları doldurun.");
       return;
     }
@@ -37,106 +45,112 @@ export default function SignUpScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <Ionicons name="arrow-back" size={24} color="#934790" />
-        <Text style={styles.backText}>Geri</Text>
-      </TouchableOpacity>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
+          <Ionicons name="arrow-back" size={24} color="#6b3d8c" />
+          <Text style={styles.backText}>Geri</Text>
+        </TouchableOpacity>
 
-      <Text style={styles.title}>Kayıt Ol</Text>
+        <Text style={styles.title}>Kayıt Ol</Text>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>İsim</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="İsminizi girin"
-          value={firstName}
-          onChangeText={setFirstName}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Soyad</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Soyadınızı girin"
-          value={lastName}
-          onChangeText={setLastName}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Kullanıcı Adı</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Kullanıcı adınızı girin"
-          value={username}
-          onChangeText={setUsername}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Telefon Numarası</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Telefon numaranızı girin"
-          keyboardType="phone-pad"
-          value={phone}
-          onChangeText={setPhone}
-        />
-      </View>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Şifre</Text>
-        <View style={styles.passwordContainer}>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>İsim</Text>
           <TextInput
-            style={[styles.input, { flex: 1 }]}
-            placeholder="Şifrenizi girin"
-            secureTextEntry={!showPassword}
-            value={password}
-            onChangeText={setPassword}
+            style={styles.input}
+            placeholder="İsminizi girin"
+            value={firstName}
+            onChangeText={setFirstName}
           />
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-            <Ionicons
-              name={showPassword ? "eye" : "eye-off"}
-              size={24}
-              color="#934790"
-            />
-          </TouchableOpacity>
         </View>
-      </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Şifreyi Onayla</Text>
-        <View style={styles.passwordContainer}>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Soyad</Text>
           <TextInput
-            style={[styles.input, { flex: 1 }]}
-            placeholder="Şifreyi tekrar girin"
-            secureTextEntry={!showConfirmPassword}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
+            style={styles.input}
+            placeholder="Soyadınızı girin"
+            value={lastName}
+            onChangeText={setLastName}
           />
-          <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
-            <Ionicons
-              name={showConfirmPassword ? "eye" : "eye-off"}
-              size={24}
-              color="#603290ff"
-            />
-          </TouchableOpacity>
         </View>
-      </View>
 
-      <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
-        <Text style={styles.signUpText}>Kayıt Ol</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Kullanıcı Adı</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Kullanıcı adınızı girin"
+            value={username}
+            onChangeText={setUsername}
+          />
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Telefon Numarası</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Telefon numaranızı girin"
+            keyboardType="phone-pad"
+            value={phone}
+            onChangeText={setPhone}
+          />
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Şifre</Text>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={[styles.input, { flex: 1 }]}
+              placeholder="Şifrenizi girin"
+              secureTextEntry={!showPassword}
+              value={password}
+              onChangeText={setPassword}
+            />
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Ionicons
+                name={showPassword ? "eye" : "eye-off"}
+                size={24}
+                color="#6b3d8c"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Şifreyi Onayla</Text>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={[styles.input, { flex: 1 }]}
+              placeholder="Şifreyi tekrar girin"
+              secureTextEntry={!showConfirmPassword}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
+            <TouchableOpacity
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              <Ionicons
+                name={showConfirmPassword ? "eye" : "eye-off"}
+                size={24}
+                color="#603290ff"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
+          <Text style={styles.signUpText}>Kayıt Ol</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#fff",
     padding: 20,
   },
   backButton: {
@@ -176,11 +190,8 @@ const styles = StyleSheet.create({
   passwordContainer: {
     flexDirection: "row",
     alignItems: "center",
-    borderWidth: 0,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 0,
     backgroundColor: "#f9f9f9",
+    borderRadius: 8,
   },
   signUpButton: {
     backgroundColor: "#603290ff",

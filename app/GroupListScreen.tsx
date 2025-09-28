@@ -1,19 +1,20 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useGroup } from "../context/GroupContext";
 
 export default function GroupListScreen() {
     const router = useRouter();
-    const [groups, setGroups] = useState<string[]>(["Aile", "Arkadaşlar", "İş Grubu", "Oyun"]);
+    const { groups } = useGroup(); // context'ten grupları alıyoruz
     const [search, setSearch] = useState("");
 
     const filteredGroups = groups.filter((group) =>
-        group.toLocaleLowerCase("tr-TR").includes(search.toLocaleLowerCase("tr-TR"))
+        group.name.toLocaleLowerCase("tr-TR").includes(search.toLocaleLowerCase("tr-TR"))
     );
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#fdfcff" }}>
             <View style={styles.container}>
                 {/* Başlık ve + butonu */}
                 <View style={styles.header}>
@@ -44,16 +45,20 @@ export default function GroupListScreen() {
                 ) : (
                     <FlatList
                         data={filteredGroups}
-                        keyExtractor={(item) => item}
+                        keyExtractor={(item) => item.name}
                         contentContainerStyle={{ paddingBottom: 20 }}
                         renderItem={({ item }) => (
                             <TouchableOpacity style={styles.groupItem}>
                                 {/* Grup Avatar */}
                                 <View style={styles.groupAvatar}>
-                                    <Text style={styles.avatarText}>{item[0]}</Text>
+                                    {item.image ? (
+                                        <Image source={{ uri: item.image }} style={styles.avatarImage} />
+                                    ) : (
+                                        <Text style={styles.avatarText}>{item.name[0]}</Text>
+                                    )}
                                 </View>
                                 {/* Grup ismi */}
-                                <Text style={styles.groupText}>{item}</Text>
+                                <Text style={styles.groupText}>{item.name}</Text>
                             </TouchableOpacity>
                         )}
                     />
@@ -78,10 +83,10 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 22,
         fontWeight: "bold",
-        color: "#934790",
+        color: "#603290ff",
     },
     addButton: {
-        backgroundColor: "#934790",
+        backgroundColor: "#603290ff",
         borderRadius: 20,
         width: 40,
         height: 40,
@@ -129,6 +134,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginRight: 15,
+        overflow: "hidden",
+    },
+    avatarImage: {
+        width: "100%",
+        height: "100%",
+        borderRadius: 20,
     },
     avatarText: {
         color: "#fff",

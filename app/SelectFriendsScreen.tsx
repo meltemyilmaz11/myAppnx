@@ -61,7 +61,7 @@ export default function SelectFriendsScreen() {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#fdfcff" }}>
             <View style={styles.container}>
                 {/* Header (top area) */}
                 <View style={styles.header}>
@@ -139,27 +139,27 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginTop: 10
     },
-    headerButton: { fontSize: 16, fontWeight: "bold", color: "#934790" },
+    headerButton: { fontSize: 16, fontWeight: "bold", color: "#603290ff" },
     selectedContainer: { flexDirection: "row", marginBottom: 20, maxHeight: 50 },
     selectedFriend: {
         flexDirection: "row",
         alignItems: "center",
         marginRight: 10,
-        backgroundColor: "#f2f2f2",
+        backgroundColor: "#fdfcff",
         borderRadius: 20,
         paddingHorizontal: 8,
         paddingVertical: 4,
     },
-    friendsTitle: { fontSize: 30, fontWeight: "bold", color: "#934790", marginBottom: 20 },
+    friendsTitle: { fontSize: 30, fontWeight: "bold", color: "#603290ff", marginBottom: 20 },
     avatarSmall: { width: 30, height: 30, borderRadius: 15, marginRight: 5 },
     selectedName: { fontSize: 18, color: "#000" },
     searchInput: { borderWidth: 1, borderColor: "#ccc", borderRadius: 10, padding: 10, marginBottom: 10 },
-    removeFriend: { marginLeft: 5, fontSize: 20, color: "#934790", fontWeight: "bold" },
+    removeFriend: { marginLeft: 5, fontSize: 20, color: "#603290ff", fontWeight: "bold" },
     addFriendButton: { marginBottom: 10 },
     addFriendContent: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#934790",
+        backgroundColor: "#603290ff",
         paddingVertical: 10,
         paddingHorizontal: 15,
         borderRadius: 15,
@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
         width: 30,
         height: 30,
         borderRadius: 15,
-        backgroundColor: "#fff",
+        backgroundColor: "#fdfcff",
         justifyContent: "center",
         alignItems: "center",
         marginRight: 10,
     },
-    plusText: { color: "#934790", fontWeight: "bold", fontSize: 20, lineHeight: 20 },
-    addFriendText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
+    plusText: { color: "#603290ff", fontWeight: "bold", fontSize: 20, lineHeight: 20 },
+    addFriendText: { color: "#fdfcff", fontWeight: "bold", fontSize: 16 },
     friendList: { flex: 1 },
     friendItem: { flexDirection: "row", alignItems: "center", paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#eee" },
     avatar: { width: 40, height: 40, borderRadius: 20, marginRight: 10 },

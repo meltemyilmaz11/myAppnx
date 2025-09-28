@@ -8,7 +8,7 @@ export default function StartScreen() {
 
   return (
     <LinearGradient
-      colors={["#6b3d8c", "#934790"]}
+      colors={["#6b3d8c", "#6b3d8c"]}
       style={styles.container}
     >
       <Text style={styles.title}>Hoş Geldiniz!</Text>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#e0c3fc", // Açık mor
   },
   buttonText: {
-    color: "#934790",
+    color: "#6b3d8c",
     fontSize: 16,
     fontWeight: "bold",
   },
